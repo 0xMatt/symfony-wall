@@ -20,7 +20,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $sql   = "SELECT a FROM WallPostBundle:WallPost a";
+        $sql   = "SELECT a FROM WallPostBundle:WallPost a ORDER BY a.create_date DESC";
         $entities = $em->createQuery($sql);
 
         // Creating pagnination
@@ -28,7 +28,7 @@ class DefaultController extends Controller
         $posts = $paginator->paginate(
             $entities,
             $this->get('request')->query->get('page', 1),
-            5
+            3
         );
 
         return [
