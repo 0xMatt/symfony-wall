@@ -18,10 +18,21 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $sql   = "SELECT a FROM WallPostBundle:WallPost a";
+        $entities = $em->createQuery($sql);
+
+        // Creating pagnination
+        $paginator  = $this->get('knp_paginator');
+        $posts = $paginator->paginate(
+            $entities,
+            $this->get('request')->query->get('page', 1),
+            5
+        );
+
         return [
-            'posts' => $this->getDoctrine()
-                ->getRepository('WallPostBundle:WallPost')
-                ->findAll(),
+            'posts' => $posts,
             'form' => $this->createForm(new WallPostType(), new WallPost())->createView()
         ];
     }
@@ -40,13 +51,19 @@ class DefaultController extends Controller
         if (! $form->isValid()) {
             $request->getSession()
                 ->getFlashBag()
-                ->add($form->getErrors());
+                ->add('errors', 'The title must be between 10 and 40 characters');
 
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirectToRoute('home');
         }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($post);
         $em->flush();
+
+        $request->getSession()
+            ->getFlashBag()
+            ->add('notices', 'Your post has been made successfully!');
+
+        return $this->redirectToRoute('home');
     }
 }

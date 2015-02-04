@@ -1,10 +1,34 @@
-{% for post in posts %}
+<html>
+<head>
+<script src="//cdn.ckeditor.com/4.4.7/basic/ckeditor.js"></script>
 
-Title: {{ post.title }}<br>
-Author:: {{ post.author ? post.author : 'Guest' }} <br>
-Message: {{ post.body }}
-<hr><br>
-{% endfor %}
+</head>
+<body>
 
-{{ form_start(form, {'action': path('create'), 'method': 'POST'}) }}
-{{ form_end(form) }}
+	{% for error in app.session.flashbag.get('errors') %}
+
+	<span style="color: red">{{ error }}</span>
+	<br>
+	{% endfor %}
+	{% for notice in app.session.flashbag.get('notices') %}
+	<span style="color: green">{{ notice }}</span>
+	<br>
+	{% endfor %}
+	{% for post in posts %}
+	Title: {{ post.title }}
+	<br> Author:: {{ post.author ? post.author : 'Guest' }}
+	<br> Message: {{ post.body|raw }}
+	<hr>
+	<br> {% endfor %}
+	{{ knp_pagination_render(posts) }}
+
+	 {{ form_start(form, {'action': path('create'),
+	'method': 'POST'}) }} {{ form_end(form) }}
+
+	<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'wallpost_body' );
+            </script>
+</body>
+</html>

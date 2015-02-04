@@ -44,6 +44,9 @@ class WallPost
      */
     protected $create_date;
 
+    /**
+     * Set some default values
+     */
     public function __construct()
     {
         $this->create_date = new \DateTime();
@@ -112,7 +115,7 @@ class WallPost
      */
     public function getCreateDate()
     {
-        return $this->create_date;
+        return $this->create_date->format('m/d/y');
     }
 
     /**
@@ -120,7 +123,7 @@ class WallPost
      * @param
      *            mixed \DateTime|null $create_date
      */
-    public function setCreateDate(\DateTime $create_date)
+    public function setCreateDate($create_date)
     {
         $this->create_date = $create_date;
         return $this;

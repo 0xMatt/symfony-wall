@@ -15,10 +15,13 @@ class WallPostType extends AbstractType
         ])
             ->add('author', 'text', [
             'label' => 'Author',
-            'required' => false,
+            'required' => false
         ])
             ->add('body', 'textarea', [
-            'label' => 'Message'
+            'label' => 'Message',
+            'attr' => [
+                'id' => 'body'
+            ]
         ])
             ->add('save', 'submit');
     }
