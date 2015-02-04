@@ -24,13 +24,23 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->request('POST', '/create', [
             'wallpost[title]' => 'Some Valid Title',
             'wallpost[author]' => 'Matthew',
-            'wallpost[body]' => 'Body context',
+            'wallpost[body]' => 'Body context'
         ]);
 
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals(302, $client->getResponse()
+            ->getStatusCode());
     }
 
-    public function testCreateActionWithFailingValidation() {
+    public function testCreateActionWithFailingValidation()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('POST', '/create', [
+            'wallpost[title]' => 'Invalid',
+            'wallpost[author]' => null,
+            'wallpost[body]' => 'Body context'
+        ]);
 
+        $this->assertEquals(302, $client->getResponse()
+            ->getStatusCode());
     }
 }
