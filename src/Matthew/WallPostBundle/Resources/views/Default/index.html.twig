@@ -1,0 +1,10 @@
+{% for post in posts %}
+
+Title: {{ post.title }}<br>
+Author:: {{ post.author ? post.author : 'Guest' }} <br>
+Message: {{ post.body }}
+<hr><br>
+{% endfor %}
+
+{{ form_start(form, {'action': path('create'), 'method': 'POST'}) }}
+{{ form_end(form) }}
